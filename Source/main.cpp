@@ -15,6 +15,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <https://www.gnu.org/licenses/>.
+    
+    ***
+    
+    THE CREATOR OF THIS PROGRAM (AleXandro_1337) IS NOT RESPONIBLE FOR DAMAGES
+    THAT THIS PROGRAM MAY CAUSE! EVEN IF THIS IS NOT MEANT TO BE DANGEROUS, IT
+    MAY SITLL CAUSE DAMAGES. USE IT AT YOUR OWN RISK!
 */
 
 typedef struct IUnknown IUnknown;
