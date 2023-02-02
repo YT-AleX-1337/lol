@@ -1,5 +1,5 @@
 /*
-    JokeProgram.Win32_x64.lol.exe 
+    JokeProgram.Win32_x64.lol
     Joke program that BSoDs your computer. Save your work first!
     Copyright (C) 2023 AleXandro_1337
 
