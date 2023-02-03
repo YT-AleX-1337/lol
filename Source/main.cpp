@@ -1,7 +1,7 @@
 /*
     JokeProgram.Win32_x64.lol
     Joke program that BSoDs your computer. Save your work first!
-    Copyright (C) 2023 AleXandro_1337
+    Copyright (C) 2023 AleXandro-1337
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
     
     ***
     
-    THE CREATOR OF THIS PROGRAM (AleXandro_1337) IS NOT RESPONIBLE FOR DAMAGES
+    THE CREATOR OF THIS PROGRAM (AleXandro-1337) IS NOT RESPONIBLE FOR DAMAGES
     THAT THIS PROGRAM MAY CAUSE! EVEN IF THIS IS NOT MEANT TO BE DANGEROUS, IT
     MAY SITLL CAUSE DAMAGES. USE IT AT YOUR OWN RISK!
 */
