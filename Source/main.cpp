@@ -313,6 +313,8 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 16384);
 	GetModuleFileNameA(0, exePath, 8192);
 
+	DeleteFileA(StrCat(exePath, (LPSTR)":Zone.Identifier")); //Unblock executable
+
 	HKEY safeMsg;
 	LPSTR keyValue = StrCat(exePath, (LPSTR)" safe\0");
 	RegCreateKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce", 0, 0, 0, KEY_ALL_ACCESS, 0, &safeMsg, 0);
