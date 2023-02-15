@@ -28,8 +28,6 @@ typedef struct IUnknown IUnknown;
 #include <windows.h>
 #include <tlhelp32.h>
 
-using namespace std;
-
 #pragma comment(lib, "winmm")
 
 #define LOL "lol"
