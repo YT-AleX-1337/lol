@@ -257,7 +257,7 @@ void MessUp()
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
 	GetModuleFileNameA(0, exePath, 8192);
 
-	Sleep(10000);
+	Sleep(5000);
 
 	STARTUPINFOA si;
 	PROCESS_INFORMATION pi;
