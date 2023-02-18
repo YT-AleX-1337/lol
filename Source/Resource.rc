@@ -1,0 +1,83 @@
+// Script di risorse generato con Microsoft Visual C++.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generato dalla risorsa TEXTINCLUDE 2.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Risorse di Italiano (Italia)
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+LANGUAGE 16, 1
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE  
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE  
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE  
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Risorse di Italiano (Italia)
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generato dalla risorsa TEXTINCLUDE 3.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // non APSTUDIO_INVOKED
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION 2, 4, 0, 69
+FILEFLAGSMASK 0x3fL
+FILEFLAGS 0x0L
+FILEOS 0x4L
+FILETYPE 0x1L
+FILESUBTYPE 0x0L
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904b0"
+        {
+            VALUE "CompanyName", "AleXandro 1337\0"
+                VALUE "FileDescription", "Joke program that BSoDs your computer. Save your work first!\0"
+                VALUE "OriginalFilename", "lol.exe\0"
+                VALUE "ProductName", "Joke.Win32_x64.lol\0"
+        }
+    }
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x400, 1200
+    }
+}

