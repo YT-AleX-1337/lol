@@ -59,7 +59,7 @@ END
 #endif    // non APSTUDIO_INVOKED
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION 2, 4, 0, 69
+FILEVERSION 2, 5, 0, 69
 FILEFLAGSMASK 0x3fL
 FILEFLAGS 0x0L
 FILEOS 0x4L
@@ -71,9 +71,9 @@ FILESUBTYPE 0x0L
         BLOCK "040904b0"
         {
             VALUE "CompanyName", "AleXandro-1337\0"
-                VALUE "FileDescription", "Joke program that BSoDs your computer. Save your work first!\0"
+                VALUE "FileDescription", "Prank program that BSoDs your computer. Save your work first!\0"
                 VALUE "OriginalFilename", "lol.exe\0"
-                VALUE "ProductName", "Joke.Win32_x64.lol\0"
+                VALUE "ProductName", "Prank.Win32_x64.lol\0"
         }
     }
     BLOCK "VarFileInfo"
