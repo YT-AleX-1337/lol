@@ -1,7 +1,7 @@
 /*
 	PrankProgram.Win32_x64.lol
 	Prank program that BSoDs your computer. Save your work first!
-	Copyright (C) 2023 AleXandro-1337
+	Copyright (C) 2023 AleX-1337
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 	***
 
-	THE CREATOR OF THIS PROGRAM (AleXandro-1337) IS NOT RESPONIBLE FOR DAMAGES
+	THE CREATOR OF THIS PROGRAM (AleX-1337) IS NOT RESPONIBLE FOR DAMAGES
 	THAT THIS PROGRAM MAY CAUSE! EVEN IF THIS IS NOT MEANT TO BE DANGEROUS, IT
 	MAY SITLL CAUSE DAMAGES. USE IT AT YOUR OWN RISK!
 */
@@ -303,7 +303,7 @@ int __stdcall WinMain(HINSTANCE hI, HINSTANCE, LPSTR, int)
 		{
 			//Message box after reboot
 			HHOOK hook = SetWindowsHookExA(WH_CALLWNDPROCRET, FckBtn, 0, GetCurrentThreadId());
-			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleXandro-1337\nhttps://youtube.com/@AleXandro-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
+			MessageBoxA(0, "Don't worry ur pc is safe, dude\nHope u didn't smash ur monitor!\n\nCrafted by AleX-1337\nhttps://youtube.com/@YT-AleX-1337", LOL, MB_OK | MB_ICONINFORMATION | MB_SYSTEMMODAL);
 			UnhookWindowsHookEx(hook);
 
 			return 0;
